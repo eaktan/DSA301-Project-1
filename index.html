@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Task 3</title>
+<style>
+body { font-family: sans-serif; text-align: center; background: #fafafa; }
+svg { background: white; border: 1px solid #000; margin-top: 20px; }
+</style>
+</head>
+<body>
+<h3>Turkey Development Quadrant</h3>
+<svg id="chart" width="800" height="500"></svg>
+<script>
+const data = [
+{ name: "Istanbul", gdp: 802669, pop: 15.7, c: "#d62728" },
+{ name: "Ankara", gdp: 788859, pop: 5.8, c: "#1f77b4" },
+{ name: "Izmir", gdp: 620450, pop: 4.5, c: "#bcbd22" },
+{ name: "Mugla", gdp: 645900, pop: 1.1, c: "#ff7f0e" },
+{ name: "Adana", gdp: 385200, pop: 2.2, c: "#2ca02c" },
+{ name: "Van", gdp: 203049, pop: 1.1, c: "#9467bd" }
+];
+const svg = document.getElementById('chart');
+const pad = 80;
+const w = 800;
+const h = 500;
+const minG = 150000;
+const maxG = 850000;
+const minP = 0;
+const maxP = 17;
+let inner = "";
+for (let i = 0; i <= 10; i++) {
+let x = pad + i * (w - 2 * pad) / 10;
+let y = pad + i * (h - 2 * pad) / 10;
+inner += `<line x1="${x}" y1="${pad}" x2="${x}" y2="${h - pad}" stroke="#eee" />`;
+inner += `<line x1="${pad}" y1="${y}" x2="${w - pad}" y2="${y}" stroke="#eee" />`;
+}
+inner += `<line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" stroke="black" stroke-width="2" />`;
+inner += `<line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h - pad}" stroke="black" stroke-width="2" />`;
+data.forEach(d => {
+const cx = pad + (d.gdp - minG) / (maxG - minG) * (w - 2 * pad);
+const cy = (h - pad) - (d.pop - minP) / (maxP - minP) * (h - 2 * pad);
+inner += `<circle cx="${cx}" cy="${cy}" r="10" fill="${d.c}" stroke="white" />`;
+inner += `<text x="${cx + 12}" y="${cy + 5}" style="font-size:12px;font-weight:bold">${d.name}</text>`;
+});
+inner += `<text x="${w/2}" y="${h-30}" text-anchor="middle" style="font-weight:bold">GDP per Capita</text>`;
+inner += `<text x="${30}" y="${h/2}" text-anchor="middle" style="font-weight:bold" transform="rotate(-90,30,${h/2})">Population (M)</text>`;
+svg.innerHTML = inner;
+</script>
+</body>
+</html>
